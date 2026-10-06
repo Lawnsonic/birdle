@@ -67,5 +67,37 @@ void main() {
       // Verify game state and input functioning without crashes
       expect(find.byType(Tile), findsWidgets);
     });
+
+    testWidgets('Backspace smoothly removes letters through animation frames without assertion errors', (tester) async {
+      tester.view.physicalSize = const Size(800, 900);
+      tester.view.devicePixelRatio = 1.0;
+      addTearDown(() => tester.view.resetPhysicalSize());
+
+      await tester.pumpWidget(const MainApp());
+
+      // Tap key 'A'
+      final keyA = find.text('A');
+      await tester.tap(keyA.first);
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Tap key 'P'
+      final keyP = find.text('P');
+      await tester.tap(keyP.first);
+      await tester.pump(const Duration(milliseconds: 100));
+
+      // Tap backspace
+      final backspace = find.byIcon(Icons.backspace_outlined);
+      await tester.tap(backspace);
+
+      // Pump through intermediate animation frames
+      await tester.pump(const Duration(milliseconds: 50));
+      await tester.pump(const Duration(milliseconds: 100));
+      await tester.pump(const Duration(milliseconds: 150));
+      await tester.pumpAndSettle();
+
+      // Tap backspace again
+      await tester.tap(backspace);
+      await tester.pumpAndSettle();
+    });
   });
 }

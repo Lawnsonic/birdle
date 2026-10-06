@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'game.dart';
 
 void main() {
@@ -28,12 +29,7 @@ class MainApp extends StatelessWidget {
 
 /// A single letter tile in the guess grid.
 class Tile extends StatelessWidget {
-  const Tile(
-    this.letter,
-    this.hitType, {
-    super.key,
-    this.isActive = false,
-  });
+  const Tile(this.letter, this.hitType, {super.key, this.isActive = false});
 
   final String letter;
   final HitType hitType;
@@ -58,26 +54,14 @@ class Tile extends StatelessWidget {
     final textColor = isNone ? Colors.black87 : Colors.white;
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
-      curve: Curves.easeOutBack,
+      duration: const Duration(milliseconds: 250),
+      curve: Curves.easeOut,
       height: 56,
       width: 56,
       decoration: BoxDecoration(
-        border: Border.all(
-          color: borderColor,
-          width: isActive ? 2.2 : 1.5,
-        ),
+        border: Border.all(color: borderColor, width: isActive ? 2.2 : 1.5),
         color: backgroundColor,
         borderRadius: BorderRadius.circular(8),
-        boxShadow: isActive
-            ? [
-                BoxShadow(
-                  color: theme.colorScheme.primary.withAlpha(45),
-                  blurRadius: 4,
-                  offset: const Offset(0, 1),
-                ),
-              ]
-            : null,
       ),
       child: Center(
         child: Text(
@@ -304,10 +288,7 @@ class _GamePageState extends State<GamePage> {
           children: [
             Icon(Icons.flutter_dash, color: Color(0xFF0D9488)),
             SizedBox(width: 8),
-            Text(
-              'Birdle',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            Text('Birdle', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         centerTitle: false,
@@ -353,7 +334,10 @@ class _GamePageState extends State<GamePage> {
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 480),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 8.0,
+                ),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -387,13 +371,17 @@ class _GamePageState extends State<GamePage> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.errorContainer,
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .errorContainer,
                                 borderRadius: BorderRadius.circular(12),
                               ),
                               child: Text(
                                 _message!,
                                 style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onErrorContainer,
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onErrorContainer,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 13,
                                 ),
@@ -443,7 +431,9 @@ class _GamePageState extends State<GamePage> {
       final char = col < _currentInput.length ? _currentInput[col] : '';
       return Tile(char, HitType.none, isActive: char.isNotEmpty);
     } else if (activeRowIndex != -1 && row < activeRowIndex ||
-        activeRowIndex == -1 && row < _game.guesses.length && _game.guesses[row].isNotEmpty) {
+        activeRowIndex == -1 &&
+            row < _game.guesses.length &&
+            _game.guesses[row].isNotEmpty) {
       final letter = _game.guesses[row][col];
       return Tile(letter.char, letter.type);
     } else {
@@ -469,8 +459,29 @@ class Keyboard extends StatelessWidget {
   final Map<String, HitType> keyHits;
   final bool disabled;
 
-  static const List<String> _row1 = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
-  static const List<String> _row2 = ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l'];
+  static const List<String> _row1 = [
+    'q',
+    'w',
+    'e',
+    'r',
+    't',
+    'y',
+    'u',
+    'i',
+    'o',
+    'p',
+  ];
+  static const List<String> _row2 = [
+    'a',
+    's',
+    'd',
+    'f',
+    'g',
+    'h',
+    'j',
+    'k',
+    'l',
+  ];
   static const List<String> _row3 = ['z', 'x', 'c', 'v', 'b', 'n', 'm'];
 
   @override
@@ -529,11 +540,7 @@ class Keyboard extends StatelessWidget {
 }
 
 class _KeyButton extends StatelessWidget {
-  const _KeyButton({
-    required this.char,
-    this.hitType,
-    this.onPressed,
-  });
+  const _KeyButton({required this.char, this.hitType, this.onPressed});
 
   final String char;
   final HitType? hitType;
